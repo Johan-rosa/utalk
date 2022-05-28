@@ -189,8 +189,8 @@
       "RemoteRepo": "firebase",
       "RemoteUsername": "JohnCoene",
       "RemoteRef": "HEAD",
-      "RemoteSha": "8610e36a308deef783081d82f8d593264aa8fef6",
-      "Hash": "7f42e341c5eee019255b97e49a97b064",
+      "RemoteSha": "96bcac652d75279139022a18d9bc9eb3eceaeec7",
+      "Hash": "ee87e8d0cde44489c2d0dc030bed1a81",
       "Requirements": [
         "R6",
         "base64enc",
@@ -507,6 +507,18 @@
         "sourcetools",
         "withr",
         "xtable"
+      ]
+    },
+    "shinyjs": {
+      "Package": "shinyjs",
+      "Version": "2.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "802e4786b353a4bb27116957558548d5",
+      "Requirements": [
+        "digest",
+        "jsonlite",
+        "shiny"
       ]
     },
     "sourcetools": {

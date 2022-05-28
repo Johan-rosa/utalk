@@ -3,6 +3,7 @@ chat_variable <- reactiveValues(sent = NULL)
 chat_ui <- function(id) {
   ns <- shiny::NS(id)
  tagList(
+   shinyjs::useShinyjs(),
    div(
      tags$head(includeScript("www/returnClick.js")),
      class = 'chat', 
@@ -26,6 +27,7 @@ chat_ui <- function(id) {
      # Chat Body
      div(
        class = 'chat_body',
+       id = 'chat_body',
        uiOutput(ns('chat_messages')),
        ),
      div(
@@ -109,6 +111,8 @@ chat_server <- function(id, f, db, users_list) {
           html_messages
           )
       })
+      
+      shinyjs::runjs("scrollToBottom()")
       
     }, ignoreNULL = FALSE)
     

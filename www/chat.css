@@ -4,9 +4,7 @@
   flex-direction: column;
 }
 
-
 /*--------------------------- Chat Header styles ---------------------------*/
-
 .chat_header {
   padding: 20px;
   display: flex;
@@ -40,7 +38,6 @@
 }
 
 /*--------------------------- Chat body styles ---------------------------*/
-
 .chat_body {
   flex: 1;
   /* color: gray; */
@@ -81,7 +78,6 @@
 }
 
 /*--------------------------- Chat footer style ---------------------------*/
-
 .chat_footer {
   display: flex;
   justify-content: space-between;

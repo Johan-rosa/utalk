@@ -47,6 +47,8 @@ sidebar_server <- function(id, f, db, users_list) {
     })
     
     observe({
+      req(user_id())
+      
       if(!user_id() %in% users_list$user_id) {
         upload_row(user_info(), db_url, 'users')
       }
