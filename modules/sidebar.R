@@ -25,15 +25,15 @@ sidebar_server <- function(id, f, db, users_list) {
   moduleServer(id, function(input, output, session) {
 
     # Register user information
-    user_name <- shiny::eventReactive(f$get_signed_in(), {
+    user_name <- shiny::reactive({
       f$get_signed_in()[["response"]][["displayName"]]
     })
 
-    user_id <- shiny::eventReactive(f$get_signed_in(), {
+    user_id <- shiny::reactive({
       f$get_signed_in()[["response"]][["email"]]
     })
 
-    user_photo <- shiny::eventReactive(f$get_signed_in(), {
+    user_photo <- shiny::reactive({
       f$get_signed_in()[["response"]][["photoURL"]]
     })
 
