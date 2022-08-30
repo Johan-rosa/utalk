@@ -1,10 +1,17 @@
 upload_row <- function(x, projectURL, fileName) {
-    fireData::upload(x = x, projectURL = projectURL, directory = paste0("main/", fileName))
+    fireData::upload(
+      x = x, 
+      projectURL = projectURL, 
+      directory = paste0("main/", fileName)
+    )
 }
 
 download_df <- function(projectURL, fileName) {
   data.table::rbindlist(
-    fireData::download(projectURL = projectURL, fileName = paste0("main/", fileName))
+    fireData::download(
+      projectURL = projectURL,
+      fileName = paste0("main/", fileName)
+    )
   )
 }
 
