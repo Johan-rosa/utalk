@@ -118,6 +118,8 @@ chat_server <- function(id, f, db, users_list) {
         upload_row(last_message(), db_url, chat_id())
       }
 
+      send_notification(user_id(), selected_chat(), db_url)
+
       updateTextInput(session, "message", value = "")
     }, ignoreNULL = FALSE)
 

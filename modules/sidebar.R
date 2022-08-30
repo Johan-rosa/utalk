@@ -57,7 +57,6 @@ sidebar_server <- function(id, f, db, users_list) {
       })
     })
 
-    # TODO make it render the chats after login
     output$sidebar_chats <- renderUI({
       req(user_id())
  

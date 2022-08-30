@@ -10,12 +10,12 @@ sidebar_chats_html <- function(user_photo, user_id, user_name) {
       shiny::img(src = user_photo)
     ),
     shiny::div(
+      class='new_message',
+      icon("bell")
+    ),
+    shiny::div(
       class='sidebar_chat_info',
       shiny::h4(user_name)
-    )#,
-    # shiny::div(
-    #   class='new_message',
-    #   icon("envelope")
-    #   )
+    )
   )
 }

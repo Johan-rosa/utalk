@@ -15,6 +15,16 @@ make_chatid <- function(user1, user2) {
     paste0('chats/', .)
 }
 
+send_notification <- function(user, selected_chat, projectURL) {
+  userkey <- stringr::str_remove_all(selected_chat, "[@\\.]")
+  endpoint <- paste("notifications", userkey, sep = "/")
+  notification_info <- list(
+    sender = user,
+    time = Sys.time()
+  )
+  upload_row(notification_info, projectURL = projectURL, fileName = endpoint)
+}
+
 
 # x <- list(
 #   user_id = 'johan.rosaperez@gmail.com',
