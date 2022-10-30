@@ -1,4 +1,3 @@
-# TODO don not reveal user email in the UI
 # Add logic for new messages recieved
 sidebar_chats_html <- function(user_photo, user_id, user_name) {
   shiny::div(
