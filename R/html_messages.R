@@ -1,7 +1,7 @@
-html_messages <- function(user_name, time, message, user_id, logged_user_id) {
-  
-  message_class <- ifelse(user_id == logged_user_id, 'chat_message chat_reciever', 'chat_message')
-  
+html_messages <- function(user_name, time, message, user_email, logged_user_email) {
+
+  message_class <- ifelse(user_email == logged_user_email, 'chat_message chat_reciever', 'chat_message')
+
   tagList(
     p(
       class= message_class,
@@ -11,15 +11,3 @@ html_messages <- function(user_name, time, message, user_id, logged_user_id) {
       )
   )
 }
-
-# x <- list(
-#   'user_id' = 1123,
-#   'user_name' = 'johan',
-#   'time' = Sys.time(),
-#   'message' = 'Hello world'
-# )
-# 
-# append(
-#   as.data.frame(x),
-#   list(logged_user_name = 'Johan')
-# )

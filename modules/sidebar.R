@@ -29,7 +29,7 @@ sidebar_server <- function(id, f, db, users_list) {
       f$get_signed_in()[["response"]][["displayName"]]
     })
 
-    user_id <- shiny::reactive({
+    user_email <- shiny::reactive({
       f$get_signed_in()[["response"]][["email"]]
     })
 
@@ -39,27 +39,30 @@ sidebar_server <- function(id, f, db, users_list) {
 
     user_info <- reactive({
       list(
-        user_id = user_id(),
+        user_email = user_email(),
         user_name = user_name(),
         user_photo = user_photo()
       )
     })
 
     observe({
-      req(user_id())
-      if(!user_id() %in% users_list$user_id) {
-        upload_row(user_info(), db_url, "users")
+      req(user_email())
+      if(!user_email() %in% users_list$user_email) {
+        to_upload
+        upload_row(
+          append(user_info(), list(user_id = make_user_id(user_email))), 
+          db_url, "users")
       }
 
     output$user_photo <- shiny::renderUI({
-      shiny::img(src = users_list$user_photo[users_list$user_id == user_id()], class="avatar")
+      shiny::img(src = users_list$user_photo[users_list$user_email == user_email()], class="avatar")
       })
     })
 
     output$sidebar_chats <- renderUI({
-      req(user_id())
+      req(user_email())
       purrr::pmap(
-        users_list[!users_list$user_id == user_id(), ],
+        users_list[!users_list$user_email == user_email(), c("user_id", "user_name", "user_photo")],
         sidebar_chats_html
         )
       })

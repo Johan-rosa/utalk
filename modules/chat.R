@@ -48,24 +48,24 @@ chat_server <- function(id, f, db, users_list) {
     selected_chat <- reactive({
       ifelse(
         is.null(input$selected_chat), 
-        users_list$user_id[users_list$user_id != user_id()][1],
-        input$selected_chat
+        users_list$user_email[users_list$user_email != user_email()][1],
+        users_list$user_email[users_list$user_id == input$selected_chat]
         )
       })
 
     chat_id <- reactive({
-      make_chatid(selected_chat(), user_id())
+      make_chatid(selected_chat(), user_email())
     })
 
     output$chat_avatar <- renderUI({
       tags$img(
         class="avatar",
-        src = users_list$user_photo[users_list$user_id == selected_chat()]
+        src = users_list$user_photo[users_list$user_email == selected_chat()]
         )
     })
 
     output$chat_name <- renderUI({
-      h3(users_list$user_name[users_list$user_id == selected_chat()])
+      h3(users_list$user_name[users_list$user_email == selected_chat()])
     })
 
     # Register user information
@@ -73,14 +73,14 @@ chat_server <- function(id, f, db, users_list) {
       f$get_signed_in()[["response"]][["displayName"]]
     })
 
-    user_id <- shiny::eventReactive(f$get_signed_in(), {
+    user_email <- shiny::eventReactive(f$get_signed_in(), {
       f$get_signed_in()[["response"]][["email"]]
     })
 
     # Messages logic
     last_message <- shiny::reactive({
       list(
-        "user_id" = user_id(),
+        "user_email" = user_email(),
         "user_name" = user_name(),
         "time" = Sys.time(),
         "message" = input$message
@@ -103,7 +103,7 @@ chat_server <- function(id, f, db, users_list) {
       output$chat_messages <- renderUI({
         purrr::pmap(
           download_df(db_url, chat_id()) %>%
-            dplyr::mutate(logged_user_id = user_id()),
+            dplyr::mutate(logged_user_email = user_email()),
           html_messages
           )
       })
@@ -118,7 +118,7 @@ chat_server <- function(id, f, db, users_list) {
         upload_row(last_message(), db_url, chat_id())
       }
 
-      send_notification(user_id(), selected_chat(), db_url)
+      send_notification(user_email(), selected_chat(), db_url)
 
       updateTextInput(session, "message", value = "")
     }, ignoreNULL = FALSE)
