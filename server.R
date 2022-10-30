@@ -1,5 +1,5 @@
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
   users_list <- download_df(db_url, "users")
 
   f <- FirebaseUI$
@@ -13,8 +13,10 @@ shinyServer(function(input, output) {
     new()$
     ref("main/messages")$
     on_value("changed")
-
-  sidebar_server("sidebar", f, db, users_list)
-  chat_server("chat", f, db, users_list)
+  
+  observeEvent(f$get_signed_in(),{
+    sidebar_server("sidebar", f, db, users_list)
+    chat_server("chat", f, db, users_list)
+  })
 
 })
