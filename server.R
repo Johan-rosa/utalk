@@ -1,6 +1,5 @@
 
 shinyServer(function(input, output) {
-
   users_list <- download_df(db_url, "users")
 
   f <- FirebaseUI$

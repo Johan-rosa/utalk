@@ -6,3 +6,4 @@ toingnore.R
 rsconnect
 firebase.rds
 .Rprofile
+.Renviron

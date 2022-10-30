@@ -47,7 +47,6 @@ sidebar_server <- function(id, f, db, users_list) {
 
     observe({
       req(user_id())
-      
       if(!user_id() %in% users_list$user_id) {
         upload_row(user_info(), db_url, "users")
       }
@@ -59,12 +58,11 @@ sidebar_server <- function(id, f, db, users_list) {
 
     output$sidebar_chats <- renderUI({
       req(user_id())
- 
       purrr::pmap(
         users_list[!users_list$user_id == user_id(), ],
         sidebar_chats_html
         )
       })
-    
+
   })
 }
