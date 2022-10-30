@@ -23,7 +23,6 @@ sidebar_ui <- function(id) {
 
 sidebar_server <- function(id, f, db, users_list) {
   moduleServer(id, function(input, output, session) {
-
     # Register user information
     user_name <- shiny::reactive({
       f$get_signed_in()[["response"]][["displayName"]]
@@ -48,7 +47,6 @@ sidebar_server <- function(id, f, db, users_list) {
     observe({
       req(user_email())
       if(!user_email() %in% users_list$user_email) {
-        to_upload
         upload_row(
           append(user_info(), list(user_id = make_user_id(user_email))), 
           db_url, "users")
