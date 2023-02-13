@@ -21,7 +21,7 @@ sidebar_ui <- function(id) {
  )
 }
 
-sidebar_server <- function(id, f, db, users_list) {
+sidebar_server <- function(id, f, db, users_list, sbt = NULL) {
   moduleServer(id, function(input, output, session) {
     # Register user information
     user_name <- shiny::reactive({
@@ -56,14 +56,63 @@ sidebar_server <- function(id, f, db, users_list) {
       shiny::img(src = users_list$user_photo[users_list$user_email == user_email()], class="avatar")
       })
     })
+    
+    user_list_r <- eventReactive(input$update_sidebar, {
+      req(user_email())
+
+      userkey <- stringr::str_remove_all(user_email(), "[\\W\\s]")
+      save_down_df <- purrr::possibly(
+        download_df, data.frame(sender = character(), last_check = lubridate::ymd_hms()))
+      
+      checks <- save_down_df(
+            db_url,
+            paste("notifications", userkey, 'check', sep = "/")
+          ) 
+      
+      received <- save_down_df(
+            db_url,
+            paste("notifications", userkey, 'received', sep = "/")
+          )
+      
+      if(nrow(checks) > 0 & nrow(received) > 0) {
+        checks <- checks |>
+          dplyr::group_by(sender) |>
+          dplyr::summarise(last_check = max(time))
+        
+        received <- received |>
+          dplyr::group_by(sender) |>
+          dplyr::summarise(last_message_time = max(time))
+        
+        notification_summary <- dplyr::left_join(checks, received, by = "sender") |>
+          dplyr::mutate(
+            notification = (last_check < last_message_time |
+              (is.na(last_check) & !is.na(last_message_time)))
+          )
+        
+        print(user_email())
+        print(notification_summary)
+        
+        sidebar <- users_list[!users_list$user_email == user_email(), ] |>
+          dplyr::left_join(notification_summary, by = c("user_email" = "sender")) |>
+          dplyr::select(user_id, user_name, user_photo, notification) |>
+          dplyr::mutate(notification = ifelse(is.na(notification), FALSE, notification))
+        
+        return(sidebar)
+      }
+      
+      users_list[!users_list$user_email == user_email(), ] |>
+        dplyr::select(user_id, user_name, user_photo) |>
+        dplyr::mutate(notification = FALSE)
+    })
 
     output$sidebar_chats <- renderUI({
-      req(user_email())
+      req(user_email(), user_list_r())
       purrr::pmap(
-        users_list[!users_list$user_email == user_email(), c("user_id", "user_name", "user_photo")],
+        user_list_r(),
         sidebar_chats_html
         )
-      })
+      }) |>
+      bindCache(user_email(), user_list_r())
 
   })
 }

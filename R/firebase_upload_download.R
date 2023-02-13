@@ -79,21 +79,21 @@ make_user_id <- function(user_id){
 }
 
 send_notification <- function(user, selected_chat, projectURL) {
-  userkey <- stringr::str_remove_all(selected_chat, "[@\\.]")
-  endpoint <- paste("notifications", userkey, sep = "/")
+  userkey <- stringr::str_remove_all(selected_chat, "[\\W\\s]")
+  endpoint <- paste("notifications", userkey, 'received', sep = "/")
   notification_info <- list(
     sender = user,
-    time = Sys.time()
+    time = lubridate::now(tzone = "America/New_York")
   )
   upload_row(notification_info, projectURL = projectURL, fileName = endpoint)
 }
 
-remove_notification <- function(user, selected_chat, projectURL) {
-  userkey <- stringr::str_remove_all(selected_chat, "[@\\.]")
-  endpoint <- paste("remove_notifications", userkey, sep = "/")
-  notification_info <- list(
-    sender = user,
-    time = Sys.time()
+register_chat_check <- function(user, selected_chat, projectURL) {
+  userkey <- stringr::str_remove_all(user, "[\\W\\s]")
+  endpoint <- paste("notifications", userkey, "check", sep = "/")
+  chat_checked_info <- list(
+    sender = selected_chat,
+    time = lubridate::now(tzone = "America/New_York")
   )
-  upload_row(notification_info, projectURL = projectURL, fileName = endpoint)
+  upload_row(chat_checked_info, projectURL = projectURL, fileName = endpoint)
 }
