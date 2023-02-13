@@ -21,7 +21,7 @@ sidebar_ui <- function(id) {
  )
 }
 
-sidebar_server <- function(id, f, db, users_list, sbt = NULL) {
+sidebar_server <- function(id, f, db, users_list) {
   moduleServer(id, function(input, output, session) {
     # Register user information
     user_name <- shiny::reactive({

@@ -41,7 +41,7 @@ chat_ui <- function(id) {
 }
 
 
-chat_server <- function(id, f, db, users_list, sbt = NULL) {
+chat_server <- function(id, f, db, users_list) {
   moduleServer(id, function(input, output, session) {
   
     # Setting chat information
