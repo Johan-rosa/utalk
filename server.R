@@ -1,7 +1,7 @@
 
 shinyServer(function(input, output, session) {
   users_list <- download_df(db_url, "users")
-
+  
   f <- FirebaseUI$
     new()$
     set_providers( 

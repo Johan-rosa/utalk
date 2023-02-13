@@ -9,5 +9,3 @@ function scrollToBottom(){
   var elem = document.getElementById('chat_body');
   elem.scrollTop = elem.scrollHeight;
 }
-
-

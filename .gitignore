@@ -7,3 +7,4 @@ rsconnect
 firebase.rds
 .Rprofile
 .Renviron
+.DS_Store

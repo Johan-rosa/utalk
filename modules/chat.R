@@ -56,7 +56,7 @@ chat_server <- function(id, f, db, users_list) {
     chat_id <- reactive({
       make_chatid(selected_chat(), user_email())
     })
-
+    
     output$chat_avatar <- renderUI({
       tags$img(
         class="avatar",
@@ -97,9 +97,14 @@ chat_server <- function(id, f, db, users_list) {
     observe({
       chat_variable$sent <<- input$send_message
     })
+    
+    observeEvent(selected_chat(), {
+      print(glue::glue("{user_email()} selected: {selected_chat()}"))
+      register_chat_check(user_email(), selected_chat(), db_url)
+    }, ignoreInit = TRUE, ignoreNULL = TRUE)
 
     observeEvent(chat_variable$sent, {
-
+      shinyjs::runjs(glue::glue("Shiny.setInputValue('sidebar-update_sidebar', {chat_variable$sent})"))
       output$chat_messages <- renderUI({
         purrr::pmap(
           download_df(db_url, chat_id()) %>%
@@ -117,7 +122,8 @@ chat_server <- function(id, f, db, users_list) {
       if(input$message != "") {
         upload_row(last_message(), db_url, chat_id())
       }
-
+      
+      print(glue::glue("{user_email()} sent messge to: {selected_chat()}"))
       send_notification(user_email(), selected_chat(), db_url)
 
       updateTextInput(session, "message", value = "")

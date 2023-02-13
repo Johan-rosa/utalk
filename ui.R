@@ -2,6 +2,7 @@
 library(shiny)
 library(firebase)
 library(magrittr)
+library(lubridate)
 
 source("setup.R")
 
@@ -13,6 +14,7 @@ shinyUI(
       tags$link(rel="stylesheet", href="sidebar.css"),
       tags$script(src = "sidebarchat_handler.js"),
     ),
+    shinyjs::useShinyjs(),
     useFirebase(),
     firebaseUIContainer(),
     reqSignin(
