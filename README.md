@@ -2,7 +2,7 @@
 
 This is a chat application developed using shiny. The idea of the project was to
 create a non-typical shiny application, something not related to data analysis and
-dashboards.
+dashboards. [Deployed version](https://demo.prod.appsilon.ai/utalk/)
 
 ## Technical highlight
 
